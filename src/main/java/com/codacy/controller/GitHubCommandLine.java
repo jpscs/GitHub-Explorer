@@ -1,5 +1,6 @@
 package com.codacy.controller;
 
+
 import com.codacy.common.CommandLineHandler;
 import com.codacy.entity.GitHubCommit;
 
@@ -19,9 +20,10 @@ public class GitHubCommandLine extends CommandLineHandler {
     private static final String LOG_COMMAND = "log";
     private static final String PRETTY_FORMAT = "--pretty=format:\"%H,%an,%ad,%s\"";
     private static final String REGEX_SPLIT_COMMIT = "\\s*,\\s*";
+    private static final String CLONE = "clone";
 
     public void gitClone(final Path directory, final String originUrl) throws IOException, InterruptedException {
-        //runCommand(directory.getParent(), "git", "clone", originUrl, directory.getFileName().toString());
+        runCommand(directory.getParent(), GIT, CLONE, originUrl, directory.getFileName().toString());
     }
 
     public HashMap<String, GitHubCommit> gitLog(final Path directory) throws IOException, InterruptedException {
@@ -31,21 +33,19 @@ public class GitHubCommandLine extends CommandLineHandler {
 
     private HashMap<String, GitHubCommit> parseCommitLogsToGitHubCommitList(final List<String> logLines) {
         HashMap<String, GitHubCommit> gitHubCommitMap = new HashMap<>();
-
         for (String line : logLines) {
             GitHubCommit gitHubCommit = parseGitLogFields(line);
             gitHubCommitMap.put(gitHubCommit.getCommitHash(), gitHubCommit);
         }
-
         return gitHubCommitMap;
     }
 
     private GitHubCommit parseGitLogFields(final String logLine) {
         List<String> commitValues = Arrays.asList(logLine.split(REGEX_SPLIT_COMMIT));
-
-        return new GitHubCommit(commitValues.get(HASH_INDEX),
-                commitValues.get(AUTHOR_INDEX),
-                commitValues.get(DATE_INDEX),
-                commitValues.get(COMMENT_INDEX));
+        GitHubCommit gitHubCommit = new GitHubCommit(commitValues.get(HASH_INDEX),
+                                                commitValues.get(AUTHOR_INDEX),
+                                                commitValues.get(DATE_INDEX),
+                                                commitValues.get(COMMENT_INDEX));
+        return gitHubCommit;
     }
 }

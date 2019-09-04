@@ -3,6 +3,7 @@ package com.codacy.controller;
 
 import com.codacy.common.CommandLineHandler;
 import com.codacy.entity.GitHubCommit;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -10,6 +11,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+@Component("gitHubCommandLine")
 public class GitHubCommandLine extends CommandLineHandler {
 
     private static final int HASH_INDEX = 0;
@@ -28,7 +30,7 @@ public class GitHubCommandLine extends CommandLineHandler {
 
     public HashMap<String, GitHubCommit> gitLog(final Path directory) throws IOException, InterruptedException {
         runCommand(directory, GIT, LOG_COMMAND, PRETTY_FORMAT);
-        return parseCommitLogsToGitHubCommitList(getOutputGobbler().getLogLines());
+        return parseCommitLogsToGitHubCommitList(getLogLines());
     }
 
     private HashMap<String, GitHubCommit> parseCommitLogsToGitHubCommitList(final List<String> logLines) {

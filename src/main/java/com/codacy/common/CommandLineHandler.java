@@ -1,8 +1,12 @@
 package com.codacy.common;
 
+import com.codacy.controller.StreamGobbler;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public abstract class CommandLineHandler {
@@ -10,8 +14,11 @@ public abstract class CommandLineHandler {
     private static final String STREAM_ERROR = "ERROR";
     private static final String STREAM_OUTPUT = "OUTPUT";
     private static final String GIT_COMMAND_LOG = "log";
+    private List<String> logLines = new ArrayList<>();
 
-    private StreamGobbler outputGobbler;
+    public List<String> getLogLines() {
+        return logLines;
+    }
 
     protected void runCommand(final Path directory, final String... command) throws IOException, InterruptedException {
         Objects.requireNonNull(directory, DIRECTORY);
@@ -27,7 +34,7 @@ public abstract class CommandLineHandler {
         // Use StreamGobbler to handle errors from the execution of command
         StreamGobbler errorGobbler = new StreamGobbler(process.getErrorStream(), STREAM_ERROR);
         //Use StreamGobbler to handle output resulting from the command line execution
-        outputGobbler = new StreamGobbler(process.getInputStream(), STREAM_OUTPUT);
+        StreamGobbler outputGobbler = new StreamGobbler(process.getInputStream(), STREAM_OUTPUT);
         outputGobbler.setLog(command[1].equals(GIT_COMMAND_LOG));
 
         outputGobbler.start();
@@ -39,10 +46,14 @@ public abstract class CommandLineHandler {
 
         if (exitCode != 0) {
             throw new AssertionError(String.format("runCommand returned %d", exitCode));
+        } else {
+            storeLogLines(outputGobbler);
         }
     }
 
-    public StreamGobbler getOutputGobbler() {
-        return outputGobbler;
+    private void storeLogLines(final StreamGobbler outputGobbler) {
+        if (outputGobbler.isLog()) {
+            logLines = outputGobbler.getLogLines();
+        }
     }
 }

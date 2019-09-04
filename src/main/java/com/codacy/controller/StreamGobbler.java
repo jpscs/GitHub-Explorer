@@ -1,4 +1,4 @@
-package com.codacy.common;
+package com.codacy.controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;

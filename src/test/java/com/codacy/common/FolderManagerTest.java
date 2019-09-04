@@ -1,7 +1,6 @@
 package com.codacy.common;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -12,27 +11,27 @@ import java.nio.file.Paths;
 import static org.junit.Assert.assertTrue;
 
 public class FolderManagerTest {
-    private final static String folderName = "./testTempRepository";
-    private final static Path path = Paths.get(folderName);
+    private static final String FOLDER_NAME = "./testTempRepository";
+    private static final Path PATH = Paths.get(FOLDER_NAME);
 
 
     @After
     public void cleanUp() throws IOException {
-        Files.delete(path);
+        Files.delete(PATH);
     }
 
     @Test
     public void folderIsCreatedWhenDoesNotExistTest() throws IOException {
-        FolderManager.createWorkFolder(path);
-        assertTrue(Files.exists(path));
+        FolderManager.createWorkFolder(PATH);
+        assertTrue(Files.exists(PATH));
     }
 
     @Test
     public void folderIsNotCreatedWIfItExistsTest() throws IOException {
-        FolderManager.createWorkFolder(path);
-        FolderManager.createWorkFolder(path);
+        FolderManager.createWorkFolder(PATH);
+        FolderManager.createWorkFolder(PATH);
 
-        assertTrue(Files.exists(path));
+        assertTrue(Files.exists(PATH));
     }
 
 }

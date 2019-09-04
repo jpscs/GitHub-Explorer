@@ -1,12 +1,13 @@
-package com.codacy.entites;
+package com.codacy.entity;
 
 public class GitHubCommit {
-    String commitHash;
-    String author;
-    String date;
-    String comment;
+    private String commitHash;
+    private String author;
+    private String date;
+    private String comment;
 
-    public GitHubCommit() {}
+    public GitHubCommit() {
+    }
 
     public GitHubCommit(String commitHash, String author, String date, String comment) {
         this.commitHash = commitHash;

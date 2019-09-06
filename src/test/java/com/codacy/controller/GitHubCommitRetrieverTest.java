@@ -49,8 +49,6 @@ public class GitHubCommitRetrieverTest {
             gitLogs = gitHubCommitRetriever.getCommitList(URL);
         } catch (IOException e) {
             Assert.fail(e.toString());
-        } catch (InterruptedException e) {
-            Assert.fail(e.toString());
         }
 
         Assert.assertEquals(expectedGitLogs, gitLogs);

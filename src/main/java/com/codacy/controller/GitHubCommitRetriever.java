@@ -18,15 +18,35 @@ public class GitHubCommitRetriever {
     @Autowired
     private GitHubCommandLine gitHubCommandLine;
 
-    public HashMap<String, GitHubCommit> getCommitList(final String url) throws IOException, InterruptedException {
-        HashMap<String, GitHubCommit> gitLogs = new HashMap<>();
-        if (StringUtils.isNotBlank(url)) {
-            String repositoryFolderName = TEMP_REPOSITORY;
-            Path path = Paths.get(repositoryFolderName);
-            FolderManager.prepareWorkFolder(path);
+    @Autowired
+    private GitHubApi gitHubApi;
 
-            gitHubCommandLine.gitClone(path, url);
-            gitLogs = gitHubCommandLine.gitLog(path);
+    public HashMap<String, GitHubCommit> getCommitList(final String url) throws IOException {
+        HashMap<String, GitHubCommit> gitLogs = new HashMap<>();
+
+        if (StringUtils.isNotBlank(url)) {
+            gitLogs = getCommitListFromGitHub(url);
+        }
+
+        return gitLogs;
+    }
+
+    private HashMap<String, GitHubCommit> getCommitListFromGitHub(final String url) {
+        HashMap<String, GitHubCommit> gitLogs = new HashMap<>();
+        //gitLogs = gitHubApi.gitCloneByApi(url);
+
+        if (gitLogs.isEmpty()) {
+            try {
+                Path path = Paths.get(TEMP_REPOSITORY);
+                FolderManager.prepareWorkFolder(path);
+
+                gitHubCommandLine.gitClone(path, url);
+                gitLogs = gitHubCommandLine.gitLog(path);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         return gitLogs;

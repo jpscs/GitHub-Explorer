@@ -43,8 +43,6 @@ public class GitHubCommitControllerTest {
             doReturn(expectedGitLogs).when(gitHubCommitRetriever).getCommitList(anyString());
         } catch (IOException e) {
             Assert.fail(e.toString());
-        } catch (InterruptedException e) {
-            Assert.fail(e.toString());
         }
 
         gitLogs = gitHubCommitController.getCommitList(URL);

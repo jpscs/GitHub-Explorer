@@ -2,9 +2,12 @@ package com.codacy.controller;
 
 import com.codacy.common.FolderManager;
 import com.codacy.entity.GitHubCommit;
+import com.codacy.util.GitHubConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -35,6 +38,7 @@ public class GitHubCommitRetriever {
         HashMap<String, GitHubCommit> gitLogs = new HashMap<>();
         //gitLogs = gitHubApi.gitCloneByApi(url);
 
+        // if API request fails use the command line to retrieve commit logs
         if (gitLogs.isEmpty()) {
             try {
                 Path path = Paths.get(TEMP_REPOSITORY);
@@ -43,9 +47,11 @@ public class GitHubCommitRetriever {
                 gitHubCommandLine.gitClone(path, url);
                 gitLogs = gitHubCommandLine.gitLog(path);
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new ResponseStatusException(
+                        HttpStatus.INTERNAL_SERVER_ERROR, GitHubConstants.REQUEST_FAILED_AND_CAUSED_AN_ERROR_ON_THE_SERVER, e);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                throw new ResponseStatusException(
+                        HttpStatus.INTERNAL_SERVER_ERROR, GitHubConstants.REQUEST_FAILED_AND_CAUSED_AN_ERROR_ON_THE_SERVER, e);
             }
         }
 

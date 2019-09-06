@@ -1,9 +1,12 @@
 package com.codacy.controller;
 
 import com.codacy.entity.GitHubCommit;
+import com.codacy.util.GitHubConstants;
 import org.kohsuke.github.GHCommit;
 import org.kohsuke.github.GitHub;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -24,8 +27,8 @@ public class GitHubApi {
             commitHashMap = parseGHCommitToGitHubCommitList(ghCommitList);
             return commitHashMap;
         } catch (IOException e) {
-            e.printStackTrace();
-            return commitHashMap;
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR, GitHubConstants.REQUEST_FAILED_AND_CAUSED_AN_ERROR_ON_THE_SERVER, e);
         }
     }
 
@@ -46,7 +49,8 @@ public class GitHubApi {
                     ghCommit.getCommitDate().toString(),
                     ghCommit.getCommitDate().toString());
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR, GitHubConstants.REQUEST_FAILED_AND_CAUSED_AN_ERROR_ON_THE_SERVER, e);
         }
 
         return gitHubCommit;

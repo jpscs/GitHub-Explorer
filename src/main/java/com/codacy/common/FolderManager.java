@@ -1,6 +1,9 @@
 package com.codacy.common;
 
+import com.codacy.util.GitHubConstants;
 import org.apache.commons.io.FileUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,9 +20,10 @@ public final class FolderManager {
                 System.out.println("Directory already exists, cleaning it up...");
                 FileUtils.cleanDirectory(new File(folderPath.toString()));
                 return true;
-            } catch (IOException ex) {
+            } catch (IOException e) {
                 System.err.println("Failed to clean directory!");
-                return false;
+                throw new ResponseStatusException(
+                        HttpStatus.INTERNAL_SERVER_ERROR, GitHubConstants.REQUEST_FAILED_AND_CAUSED_AN_ERROR_ON_THE_SERVER, e);
             }
         } else {
             Files.createDirectory(folderPath);

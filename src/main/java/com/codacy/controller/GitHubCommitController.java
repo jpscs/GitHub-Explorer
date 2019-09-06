@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.util.HashMap;
 
+//TODO need to improve the error handling and returning messages to the user
 @RestController
 public class GitHubCommitController {
     @Autowired
@@ -16,15 +17,16 @@ public class GitHubCommitController {
 
     @GetMapping("/commits")
     HashMap<String, GitHubCommit> getCommitList(@RequestParam("gitHubUrl") String gitHubUrl) {
+        HashMap<String, GitHubCommit> commitList = new HashMap<>();
+
         try {
-            return gitHubCommitRetriever.getCommitList(gitHubUrl);
+            commitList = gitHubCommitRetriever.getCommitList(gitHubUrl);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        HashMap<String, GitHubCommit> xpto = new HashMap<>();
-        return xpto;
+        return commitList;
     }
 }

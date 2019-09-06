@@ -1,7 +1,7 @@
 package com.codacy.entity;
 
 public class GitHubCommit {
-    private String commitHash;
+    private String hash;
     private String author;
     private String date;
     private String comment;
@@ -9,19 +9,19 @@ public class GitHubCommit {
     public GitHubCommit() {
     }
 
-    public GitHubCommit(String commitHash, String author, String date, String comment) {
-        this.commitHash = commitHash;
+    public GitHubCommit(String hash, String author, String date, String comment) {
+        this.hash = hash;
         this.author = author;
         this.date = date;
         this.comment = comment;
     }
 
-    public String getCommitHash() {
-        return commitHash;
+    public String getHash() {
+        return hash;
     }
 
-    public void setCommitHash(String commitHash) {
-        this.commitHash = commitHash;
+    public void setHash(String hash) {
+        this.hash = hash;
     }
 
     public String getAuthor() {

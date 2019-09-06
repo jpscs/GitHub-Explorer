@@ -1,7 +1,6 @@
 package com.codacy.controller;
 
 
-import com.codacy.common.CommandLineHandler;
 import com.codacy.entity.GitHubCommit;
 import org.springframework.stereotype.Component;
 
@@ -37,7 +36,7 @@ public class GitHubCommandLine extends CommandLineHandler {
         HashMap<String, GitHubCommit> gitHubCommitMap = new HashMap<>();
         for (String line : logLines) {
             GitHubCommit gitHubCommit = parseGitLogFields(line);
-            gitHubCommitMap.put(gitHubCommit.getCommitHash(), gitHubCommit);
+            gitHubCommitMap.put(gitHubCommit.getHash(), gitHubCommit);
         }
         return gitHubCommitMap;
     }

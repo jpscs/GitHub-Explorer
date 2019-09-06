@@ -2,6 +2,7 @@ package com.codacy.controller;
 
 import com.codacy.common.FolderManager;
 import com.codacy.entity.GitHubCommit;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,12 +19,16 @@ public class GitHubCommitRetriever {
     private GitHubCommandLine gitHubCommandLine;
 
     public HashMap<String, GitHubCommit> getCommitList(final String url) throws IOException, InterruptedException {
-        String repositoryFolderName = TEMP_REPOSITORY;
-        Path path = Paths.get(repositoryFolderName);
-        FolderManager.createWorkFolder(path);
+        HashMap<String, GitHubCommit> gitLogs = new HashMap<>();
+        if (StringUtils.isNotBlank(url)) {
+            String repositoryFolderName = TEMP_REPOSITORY;
+            Path path = Paths.get(repositoryFolderName);
+            FolderManager.prepareWorkFolder(path);
 
-        gitHubCommandLine.gitClone(path, url);
-        HashMap<String, GitHubCommit> gitLogs = gitHubCommandLine.gitLog(path);
+            gitHubCommandLine.gitClone(path, url);
+            gitLogs = gitHubCommandLine.gitLog(path);
+        }
+
         return gitLogs;
     }
 }

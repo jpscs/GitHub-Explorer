@@ -1,6 +1,4 @@
-package com.codacy.common;
-
-import com.codacy.controller.StreamGobbler;
+package com.codacy.controller;
 
 import java.io.IOException;
 import java.nio.file.Files;

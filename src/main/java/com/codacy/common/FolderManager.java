@@ -11,7 +11,7 @@ public final class FolderManager {
     private FolderManager() {
     }
 
-    public static boolean createWorkFolder(final Path folderPath) throws IOException {
+    public static boolean prepareWorkFolder(final Path folderPath) throws IOException {
         if (Files.exists(folderPath)) {
             try {
                 System.out.println("Directory already exists, cleaning it up...");

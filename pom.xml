@@ -17,7 +17,7 @@
     <properties>
         <maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
         <maven-checkstyle-plugin.version>3.0.0</maven-checkstyle-plugin.version>
-        <commons-io.version>2.6</commons-io.version>
+        <commons-io.version>2.7</commons-io.version>
         <mockito-core.version>3.0.0</mockito-core.version>
         <junit.version>4.12</junit.version>
     </properties>
